@@ -2,6 +2,9 @@
 """
 # Librerias Django
 from django.db import models
+from django.db.models import Avg, Sum
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
 
 # Librerias de terceros
 from apps.base.models import PyFather, PyProduct
@@ -62,3 +65,21 @@ class PySaleOrderDetail(PyFather):
                 name='product_order_unique'
             )
         ]
+
+
+# ========================================================================== #
+@receiver(post_save, sender=PySaleOrderDetail)
+def post_save_sale_order(sender, instance, created, **kwargs):
+    _sale_order = PySaleOrder.objects.get(pk=instance.sale_order.pk)
+    _amount_untaxec = sender.objects.filter(sale_order=instance.sale_order.pk).aggregate(Sum('amount_total'))
+    _sale_order.amount_untaxec = _amount_untaxec['amount_total__sum']
+    _sale_order.save()
+
+
+# ========================================================================== #
+@receiver(post_delete, sender=PySaleOrderDetail)
+def post_delete_sale_order(sender, instance, **kwargs):
+    _sale_order = PySaleOrder.objects.get(pk=instance.sale_order.pk)
+    _amount_untaxec = sender.objects.filter(sale_order=instance.sale_order.pk).aggregate(Sum('amount_total'))
+    _sale_order.amount_untaxec = _amount_untaxec['amount_total__sum']
+    _sale_order.save()

@@ -1,7 +1,7 @@
 """Formularios del modulo sale
 """
 # Librerias Django
-from django.forms import ModelForm, TextInput, HiddenInput, NumberInput
+from django.forms import HiddenInput, ModelForm, NumberInput, TextInput
 
 # Librerias de terceros
 from dal import autocomplete
