@@ -10,7 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
+# Librerias Standard
 import os
+
+# Librerias Django
 from django.utils.translation import ugettext_lazy as _
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -26,18 +29,26 @@ SECRET_KEY = '(5u_8%)7z-9t#pxxg8@$bt99rr)m6*ceuqf4-ic79-mmd8=^mw'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0','localhost', '127.0.0.1', 'www.pyerp.cl', 'pyerp.cl']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'www.pyerp.cl', 'pyerp.cl']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    # Django Apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Third-Party Apps
+    'dal',
+    'dal_select2',
+    'bootstrap4',
+
+    # Local Apps
     'apps.erp',
     'apps.home',
     'apps.base',
@@ -49,7 +60,6 @@ INSTALLED_APPS = [
     'apps.pos',
     'apps.marketing',
     'apps.project',
-    'bootstrap4',
 ]
 
 MIDDLEWARE = [
@@ -135,12 +145,19 @@ LANGUAGES = (
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = 'media'
+
 STATIC_URL = '/static/'
-try:
-    from .localsettings import *
-except ImportError:
-    import logging
-    logging.getLogger(__name__).warning('localsettings.py no encontrado')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
+STATIC_ROOT = '/home/gvizquel/pyerp/staticfiles'
+
+# try:
+#     from .localsettings import *
+# except ImportError:
+#     import logging
+#     logging.getLogger(__name__).warning('localsettings.py no encontrado')
 
 
 LOGIN_REDIRECT_URL = '/erp'

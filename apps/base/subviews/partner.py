@@ -1,13 +1,17 @@
+# Librerias Django
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView
 
-from ...base.models import PyPartner
-from ..common import check_rut, validarRut
+# Librerias de terceros
+from dal import autocomplete
 
+# Librerias en carpetas locales
+from ...base.models import PyPartner
 from ...base.submodels.log import PyLog
+from ..common import check_rut, validarRut
 
 PARTNER_FIELDS = [
     {'string': 'Nombre', 'field': 'name'},
@@ -126,3 +130,18 @@ def DeletePartner(self, pk):
     partner.delete()
     PyLog(name='Partner', note='PartnerDelete:').save()
     return redirect(reverse('partners'))
+
+
+# ========================================================================== #
+class PartnerAutoComplete(autocomplete.Select2QuerySetView):
+    """Servicio de auto completado para el modelo Taxonomia (sub especie)
+    """
+
+    def get_queryset(self):
+
+        queryset = PyPartner.objects.all()
+
+        if self.q:
+            queryset = queryset.filter(name__icontains=self.q)
+
+        return queryset

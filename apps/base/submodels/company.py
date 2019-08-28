@@ -1,7 +1,11 @@
+# Librerias Django
 from django.db import models
 from django.urls import reverse
-from .locations import PyComuna, PyCountry, PyRegion
+
+# Librerias en carpetas locales
 from .father import PyFather
+from .locations import PyComuna, PyCountry, PyRegion
+
 
 class PyCompany(PyFather):
     name = models.CharField(max_length=40)

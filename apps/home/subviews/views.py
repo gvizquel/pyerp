@@ -1,8 +1,14 @@
+# Librerias Future
 from __future__ import unicode_literals
-from apps.website.submodels.post import PyPost
-from django.views.generic import DetailView, ListView
-from django.shortcuts import render
+
+# Librerias Django
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import render
+from django.views.generic import DetailView, ListView
+
+# Librerias de terceros
+from apps.website.submodels.post import PyPost
+
 
 def index(request):
     return render(request, 'index.html')

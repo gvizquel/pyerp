@@ -1,15 +1,31 @@
-from django.urls import path
+# Librerias Django
 from django.contrib.auth import views as auth_views
-from ..base.views import CustomerListView, PartnerDetailView, PartnerCreateView, PartnerUpdateView, DeletePartner, ProviderListView
-from ..base.views import CompanyListView, CompanyDetailView, CompanyCreateView, CompanyUpdateView, DeleteCompany
-from .subviews.product import ProductListView, ProductDetailView, ProductCreateView, ProductUpdateView, DeleteProduct
-from ..base.views import UserListView, UserDetailView, UserCreateView, UserUpdateView, DeleteUser, ChangePasswordForm, DoChangePassword
-from .subviews.product_category import ProductCategoryListView, ProductCategoryDetailView, ProductCategoryCreateView, ProductCategoryUpdateView, DeleteProductCategory
-from .subviews.product_webcategory import ProductWebCategoryListView, ProductWebCategoryDetailView, ProductWebCategoryCreateView, ProductWebCategoryUpdateView, DeleteProductWebCategory
-from ..base.views import UpdateBaseConfigView
+from django.urls import path
+
+# Librerias en carpetas locales
+from ..base.views import (
+    ChangePasswordForm, CompanyCreateView, CompanyDetailView, CompanyListView,
+    CompanyUpdateView, CustomerListView, DeleteCompany, DeletePartner,
+    DeleteUser, DoChangePassword, PartnerAutoComplete, PartnerCreateView,
+    PartnerDetailView, PartnerUpdateView, ProviderListView,
+    UpdateBaseConfigView, UserCreateView, UserDetailView, UserListView,
+    UserUpdateView)
 from .subviews.base_config import LoadData
-from .subviews.log import LogListView, LogDetailView, LogCreateView, LogUpdateView, DeleteLog
-from .subviews.cron import CronListView, CronDetailView, CronCreateView, CronUpdateView, DeleteCron
+from .subviews.cron import (
+    CronCreateView, CronDetailView, CronListView, CronUpdateView, DeleteCron)
+from .subviews.log import (
+    DeleteLog, LogCreateView, LogDetailView, LogListView, LogUpdateView)
+from .subviews.product import (
+    DeleteProduct, ProductAutoComplete, ProductCreateView, ProductDetailView,
+    ProductListView, ProductUpdateView)
+from .subviews.product_category import (
+    DeleteProductCategory, ProductCategoryCreateView,
+    ProductCategoryDetailView, ProductCategoryListView,
+    ProductCategoryUpdateView)
+from .subviews.product_webcategory import (
+    DeleteProductWebCategory, ProductWebCategoryCreateView,
+    ProductWebCategoryDetailView, ProductWebCategoryListView,
+    ProductWebCategoryUpdateView)
 
 urlpatterns = [
     path('config/<int:pk>', UpdateBaseConfigView.as_view(), name='base-config'),
@@ -65,4 +81,16 @@ urlpatterns = [
     path('cron/<int:pk>/', CronDetailView.as_view(), name='cron-detail'),
     path('cron/<int:pk>/update', CronUpdateView.as_view(), name='cron-update'),
     path('cron/<int:pk>/delete/', DeleteCron, name='cron-delete'),
+
+    # ====================== Rutas de Auto Completado ====================== #
+    path(
+        'partner/partner-autocomplete',
+        PartnerAutoComplete.as_view(),
+        name='partners-autocomplete'
+    ),
+    path(
+        'product/product-autocomplete',
+        ProductAutoComplete.as_view(),
+        name='product-autocomplete'
+    ),
 ]

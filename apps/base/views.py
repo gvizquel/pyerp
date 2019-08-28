@@ -1,3 +1,4 @@
+# Librerias Django
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -6,10 +7,16 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
+# Librerias en carpetas locales
 from ..base.models import PyProduct, PyProductCategory
-from .subviews.partner import CustomerListView, ProviderListView, PartnerDetailView, PartnerCreateView, PartnerUpdateView, DeletePartner
 from .subviews.base_config import UpdateBaseConfigView
-from .subviews.company import CompanyListView, CompanyDetailView, CompanyCreateView, CompanyUpdateView, DeleteCompany
+from .subviews.company import (
+    CompanyCreateView, CompanyDetailView, CompanyListView, CompanyUpdateView,
+    DeleteCompany)
+from .subviews.partner import (
+    CustomerListView, DeletePartner, PartnerAutoComplete, PartnerCreateView,
+    PartnerDetailView, PartnerUpdateView, ProviderListView)
+
 
 class UserListView(ListView):
     model = User

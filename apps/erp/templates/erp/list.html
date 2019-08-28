@@ -8,7 +8,7 @@
 {% block content %}
     <div class="card card-primary card-outline mt-2">
         <div class="card-header">
-            <a href="{% url add_url %}" class="btn btn-primary">Crear</a>
+            <a href="{% url add_url %}" class="btn btn-primary">crear</a>
         </div>
         <div class="card-body">
             <table id="list_table" class="table table-bordered table-striped table-hover">
@@ -17,14 +17,20 @@
                         {% for field in fields %}
                         <th>{{ field.string }}</th>
                         {% endfor %}
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for object in object_list %}
-                    <tr data-row-location="{% url detail_url object.pk %}" style="cursor: pointer;">
+                    <tr data-row-location="" style="cursor: pointer;">
                         {% for field in fields %}
                         <td>{{ object|get_obj_attr:field.field }}</td>
                         {% endfor %}
+                        <td class="text-center">
+                            <button onclick="" data-toggle="tooltip" title="Ver" type="button" class="btn btn-default btn-sm"><span class="fa fa-eye"></span></button>
+                            <a href="{% url edit_url object.pk %}" data-toggle="tooltip" title="Editar" class="btn btn-primary btn-sm"><span class="fa fa-pen"></a>
+                            <a href="{% url delete_url object.pk %}" data-toggle="tooltip" title="Editar" class="btn btn-danger btn-sm"><span class="fa fa-trash"></a>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>

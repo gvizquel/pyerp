@@ -1,10 +1,17 @@
-from django.urls import reverse
+# Librerias Django
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
+from django.db.models import Q
+from django.urls import reverse
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView
-from ...base.models import PyProduct
 
+# Librerias de terceros
+from dal import autocomplete
+
+# Librerias en carpetas locales
+from ...base.models import PyProduct
+from apps.sale.models import PySaleOrderDetail
 
 PRODUCT_FIELDS = [
     {'string': 'Código', 'field': 'code'},
@@ -82,3 +89,25 @@ def DeleteProduct(self, pk):
     product = PyProduct.objects.get(id=pk)
     product.delete()
     return redirect(reverse('products'))
+
+
+# ========================================================================== #
+class ProductAutoComplete(autocomplete.Select2QuerySetView):
+    """Servicio de auto completado para el modelo Taxonomia (sub especie)
+    """
+
+    def get_queryset(self):
+
+        queryset = PyProduct.objects.all()
+
+        _sale_order = self.forwarded.get('sale_order', None)
+        if _sale_order:
+            product_sale_order = PySaleOrderDetail.objects.filter(
+                sale_order=_sale_order
+            ).only("product")
+            queryset = queryset.filter(~Q(pk__in=product_sale_order))
+
+        if self.q:
+            queryset = queryset.filter(name__icontains=self.q)
+
+        return queryset

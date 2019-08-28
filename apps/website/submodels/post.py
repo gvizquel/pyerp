@@ -1,8 +1,14 @@
+# Librerias Standard
+import datetime
+
+# Librerias Django
+from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
-from django.contrib.auth.models import User
-import datetime
+
+# Librerias en carpetas locales
 from ...base.submodels.father import PyFather
+
 
 class PyPost(PyFather):
     title = models.CharField('Nombre', max_length=255)

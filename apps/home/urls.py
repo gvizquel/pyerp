@@ -1,6 +1,10 @@
+# Librerias Django
 from django.conf.urls import url
 from django.urls import path
-from .subviews.views import index, BlogView, PostDetailView,  shop, UnderConstruction, product
+
+# Librerias en carpetas locales
+from .subviews.views import (
+    BlogView, PostDetailView, UnderConstruction, index, product, shop)
 
 urlpatterns = [
     url(r'^$', index, name='home-index'),
