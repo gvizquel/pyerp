@@ -10,7 +10,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from dal import autocomplete
 
 # Librerias en carpetas locales
-from ...base.models import PyProduct
+from apps.base.models import PyProduct
 from apps.sale.models import PySaleOrderDetail
 
 PRODUCT_FIELDS = [
@@ -98,14 +98,13 @@ class ProductAutoComplete(autocomplete.Select2QuerySetView):
 
     def get_queryset(self):
 
-        queryset = PyProduct.objects.all()
 
         _sale_order = self.forwarded.get('sale_order', None)
         if _sale_order:
-            product_sale_order = PySaleOrderDetail.objects.filter(
-                sale_order=_sale_order
-            ).only("product")
-            queryset = queryset.filter(~Q(pk__in=product_sale_order))
+            product_sale_order = PySaleOrderDetail.objects.filter(sale_order=_sale_order).values("product")
+            queryset = PyProduct.objects.filter(~Q(pk__in=product_sale_order))
+        else:
+            queryset = PyProduct.objects.all()
 
         if self.q:
             queryset = queryset.filter(name__icontains=self.q)
