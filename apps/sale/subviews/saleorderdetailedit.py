@@ -16,16 +16,6 @@ from ..models import PySaleOrder, PySaleOrderDetail
 LOGGER = logging.getLogger(__name__)
 
 
-SALE_FIELDS = [
-    {'string': 'Producto', 'field': 'product'},
-    {'string': 'Descripcion', 'field': 'description'},
-    {'string': 'Cantidad', 'field': 'quantity'},
-    {'string': 'Precio', 'field': 'amount_untaxed'},
-    {'string': 'Descuento', 'field': 'discount'},
-    {'string': 'Sub Total', 'field': 'amount_total'},
-]
-
-
 # ========================================================================== #
 class SaleOrderDetailEditView(LoginRequiredMixin, UpdateView):
     """Vista para editarar los productos de los sale

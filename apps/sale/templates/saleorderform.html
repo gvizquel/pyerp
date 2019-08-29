@@ -14,8 +14,11 @@
     <form method="post" class="form">
         <div class="card card-primary card-outline mt-2">
             <div class="card-header">
-                <a href="{% url back_url %}" class="btn btn-danger">Descartar</a>
-                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a href="{% url back_url %}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Descartar</a>
+                <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-save"></i> Guardar</button>
+                {% if object %}
+                    <a href="{% url print_url object.pk %}" class="btn btn-success btn-sm"><i class="fas fa-download"></i> Imprimir</a>
+                {% endif %}
             </div>
             <div class="card-body">
                 {% csrf_token %}
@@ -39,16 +42,16 @@
                         <thead>
                             <tr>
                                 {% for field in fields %}
-                                <th>{{ field.string }}</th>
+                                <th class="text-center">{{ field.string }}</th>
                                 {% endfor %}
-                                <th class="col-2">Acciones</th>
+                                <th class="text-center col-2">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for element in object_list %}
                             <tr>
                                 {% for field in fields %}
-                                <td>{{ element|get_obj_attr:field.field }}</td>
+                                <td class="{{ field.align }}">{{ element|get_obj_attr:field.field }}</td>
                                 {% endfor %}
                                 <td class="text-center">
                                     <button onclick="return abrir_modal('{% url product_edit_url element.pk %}')" data-toggle="tooltip" title="Editar" type="button" class="btn btn-primary btn-sm"><span class="fa fa-pen"></span></button>

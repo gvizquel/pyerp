@@ -16,13 +16,13 @@ from ..models import PySaleOrder, PySaleOrderDetail
 LOGGER = logging.getLogger(__name__)
 
 
-SALE_FIELDS = [
-    {'string': 'Producto', 'field': 'product'},
-    {'string': 'Descripcion', 'field': 'description'},
-    {'string': 'Cantidad', 'field': 'quantity'},
-    {'string': 'Precio', 'field': 'amount_untaxed'},
-    {'string': 'Descuento', 'field': 'discount'},
-    {'string': 'Sub Total', 'field': 'amount_total'},
+SALE_DETAIL_FIELDS = [
+    {'string': 'Producto', 'field': 'product', 'align': ''},
+    {'string': 'Descripcion', 'field': 'description', 'align': ''},
+    {'string': 'Cantidad', 'field': 'quantity', 'align': ''},
+    {'string': 'Precio', 'field': 'amount_untaxed', 'align': 'text-right'},
+    {'string': 'Descuento', 'field': 'discount', 'align': 'text-right'},
+    {'string': 'Sub Total', 'field': 'amount_total', 'align': 'text-right'},
 ]
 
 
@@ -41,10 +41,11 @@ class SaleOrderEditView(LoginRequiredMixin, UpdateView):
         context['title'] = 'Editar Orden de Venta'
         context['action_url'] = 'sale:sale-order-edit'
         context['back_url'] = 'sale:sale-order'
+        context['print_url'] = 'sale:sale-order-pdf'
         context['product_add_url'] = 'sale:sale-order-detail-add'
         context['product_edit_url'] = 'sale:sale-order-detail-edit'
         context['product_delete_url'] = 'sale:sale-order-detail-delete'
-        context['fields'] = SALE_FIELDS
+        context['fields'] = SALE_DETAIL_FIELDS
         context['object_list'] = PySaleOrderDetail.objects.filter(
             sale_order=_pk
         ).only(
@@ -60,6 +61,9 @@ class SaleOrderEditView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         self.object = form.save()
-        url = reverse_lazy(self.get_success_url(), kwargs={'pk': self.object.pk})
+        url = reverse_lazy(
+            self.get_success_url(),
+            kwargs={'pk': self.object.pk}
+        )
 
         return HttpResponseRedirect(url)

@@ -8,7 +8,7 @@ from django.urls import path
 from apps.sale.views import (
     SaleOrderAddView, SaleOrderDeleteView, SaleOrderDetailAddView,
     SaleOrderDetailDeleteView, SaleOrderDetailEditView, SaleOrderEditView,
-    SaleOrderListView)
+    SaleOrderListView, sale_order_pdf)
 
 app_name = 'sale'
 
@@ -41,5 +41,11 @@ urlpatterns = [
         'sale-order-detail/delete/<int:pk>',
         SaleOrderDetailDeleteView.as_view(),
         name='sale-order-detail-delete'
+    ),
+    # ====================== Sale Orders Reports URL's ===================== #
+    path(
+        'sale-order-pdf/<int:pk>',
+        sale_order_pdf,
+        name='sale-order-pdf'
     ),
 ]
